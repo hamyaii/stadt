@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stadt Café Sinzig | Modern & Gemütlich</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script id="config">
+        const websiteImages = {
+            // LOGO BILD (Lade hier dein Logo hoch und passe den Pfad an)
+            logo: "img/logo.png", 
+            menuPage1: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=1200",
+            menuPage2: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=1200",
+            heroBackground: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=2694", 
+            storyImage: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&q=80&w=1200", 
+            parallaxBanner: "https://images.unsplash.com/photo-1414235077428-338988a2e8c0?auto=format&fit=crop&q=80&w=2000",
+            
+            // MEISTERWERKE BILDER (Bitte hier deine Bilder aus dem 'img' Ordner eintragen)
+            // Lade die Bilder in den Editor hoch und lege sie falls gewollt in den 'img' Ordner. 
+            // Passe die Dateinamen hier an, falls sie anders heißen.
+            meisterwerk1: "img/2x-pindrindfleisch.jpeg",
+            meisterwerk2: "img/roastbeef-burger-mozzarella.jpeg",
+            meisterwerk3: "img/spagetti-bolognese.jpeg",
+            meisterwerk4: "img/tuna-pizza.jpeg",
+            meisterwerk5: "img/doppel-cheeseburger-bacon.jpeg",
+            meisterwerk6: "img/chef-burger.jpeg",
+            meisterwerk7: "img/roastbeef-gezupft.jpeg",
+            meisterwerk8: "img/veggi-burger.jpeg"
+        };
+
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        mokka: {
+                            dark: '#0F0F0F',
+                            charcoal: '#1A1A1A',
+                            coffee: '#231F20', 
+                            gold: '#A69076', 
+                            cream: '#F5F2EA',
+                            paper: '#FEFDFB'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['ui-serif', 'Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
+                        sans: ['ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { 
+            overflow: hidden;
+            background-color: #0F0F0F; 
+            font-family: ui-sans-serif, system-ui, sans-serif !important; 
+        }
+        h1, h2, h3, h4, .font-serif { 
+            font-family: ui-serif, Georgia, serif !important; 
+        }
+
+        #intro-overlay {
+            background-color: #0F0F0F;
+            transition: opacity 1s cubic-bezier(0.7, 0, 0.3, 1), transform 1s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+
+        .letter-animate {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(10px);
+            filter: blur(5px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .letter-animate.active {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+
+        #intro-line {
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 1.2s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+
+        #main-content {
+            opacity: 0;
+            transition: opacity 1.2s ease;
+            display: none;
+        }
+
+        #main-content.layout-ready {
+            display: block;
+        }
+
+        #main-content.visible {
+            opacity: 1;
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .reveal { 
+            opacity: 0; 
+            transform: translateY(30px); 
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); 
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .hover-underline-gold { position: relative; }
+        .hover-underline-gold::after { 
+            content: ''; position: absolute; width: 0; height: 1px; bottom: -4px; left: 0; 
+            background-color: #A69076; transition: width 0.3s ease; 
+        }
+        .hover-underline-gold:hover::after { width: 100%; }
+        
+        .page-hidden { display: none !important; }
+    </style>
+</head>
+<body class="text-mokka-paper antialiased">
+
+    <!-- INTRO OVERLAY -->
+    <div id="intro-overlay" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0F0F0F]">
+        <div class="text-center">
+            <div class="mb-4">
+                <h1 class="font-serif text-3xl md:text-5xl lg:text-6xl text-white tracking-[0.2em] md:tracking-[0.3em] flex justify-center gap-4 md:gap-8 flex-wrap">
+                    <span class="whitespace-nowrap">
+                        <span class="letter-animate">S</span>
+                        <span class="letter-animate">T</span>
+                        <span class="letter-animate">A</span>
+                        <span class="letter-animate">D</span>
+                        <span class="letter-animate">T</span>
+                    </span>
+                    <span class="whitespace-nowrap">
+                        <span class="letter-animate">C</span>
+                        <span class="letter-animate">A</span>
+                        <span class="letter-animate">F</span>
+                        <span class="letter-animate">É</span>
+                    </span>
+                </h1>
+            </div>
+            <div id="intro-line" class="h-[1px] bg-mokka-gold w-24 md:w-48 mx-auto mb-6"></div>
+            <p id="intro-tagline" class="text-mokka-gold uppercase tracking-[0.4em] text-[8px] md:text-[10px] opacity-0 transition-all duration-1000 translate-y-4">
+                Sinzig
+            </p>
+        </div>
+    </div>
+
+    <!-- HAUPTINHALT -->
+    <div id="main-content">
+        <!-- Navigation -->
+        <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 py-6 px-6 md:px-12 bg-white text-mokka-coffee shadow-sm">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <a href="#" onclick="navigateToHome(event)" class="block hover:opacity-80 transition-opacity duration-300">
+                    <img id="nav-logo" src="" alt="Stadt Café Sinzig" onerror="this.src='https://placehold.co/200x80/ffffff/ffffff?text=LOGO+HIER'" class="h-20 md:h-28 w-auto object-contain">
+                </a>
+                <div class="hidden md:flex space-x-12 items-center font-sans">
+                    <a href="#speisekarte" class="text-[10px] uppercase tracking-[0.2em] hover-underline-gold text-mokka-coffee">Speisekarte</a>
+                    <a href="#story" class="text-[10px] uppercase tracking-[0.2em] hover-underline-gold text-mokka-coffee">Geschichte</a>
+                    <a href="#location" class="text-[10px] uppercase tracking-[0.2em] hover-underline-gold text-mokka-coffee">Standort</a>
+                </div>
+                <button class="md:hidden text-mokka-coffee p-2" onclick="toggleMobileMenu()">
+                    <i data-lucide="menu" class="w-8 h-8"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="fixed inset-0 bg-[#0F0F0F] z-[100] transform translate-x-full transition-transform duration-300 flex flex-col justify-center items-center">
+            <button onclick="toggleMobileMenu()" class="absolute top-8 right-8 text-white/50 hover:text-white">
+                <i data-lucide="x" class="w-10 h-10"></i>
+            </button>
+            <div class="flex flex-col space-y-8 text-center">
+                <a href="#" onclick="toggleMobileMenu(); navigateToHome(event)" class="text-3xl text-white">Startseite</a>
+                <a href="#speisekarte" onclick="toggleMobileMenu()" class="text-3xl text-white font-serif italic text-mokka-gold">Speisekarte</a>
+                <a href="#story" onclick="toggleMobileMenu()" class="text-3xl text-white">Geschichte</a>
+                <a href="#location" onclick="toggleMobileMenu()" class="text-3xl text-white">Standort</a>
+            </div>
+        </div>
+
+        <div id="pages-wrapper">
+            <main id="page-home">
+                <!-- HERO -->
+                <header id="hero" class="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden pt-32 pb-16">
+                    <div class="absolute inset-0 z-0">
+                        <div class="absolute inset-0 bg-black/70 z-10"></div>
+                        <img id="img-hero" src="" alt="Hero Hintergrund" class="w-full h-full object-cover">
+                    </div>
+                    <div class="relative z-20 text-center px-4 max-w-4xl mx-auto">
+                        <p class="reveal text-mokka-gold text-sm md:text-lg uppercase tracking-[0.25em] mb-6 font-bold">Sinzig</p>
+                        <h1 class="reveal delay-100 text-5xl md:text-7xl lg:text-8xl text-white leading-none mb-6 font-serif">Stadt Café <br> <span class="italic text-white/90">Sinzig</span></h1>
+                        <p class="reveal delay-200 text-gray-300 text-sm md:text-base font-light tracking-wide max-w-lg mx-auto leading-relaxed mb-10">Modern & gemütlich. Von hausgemachter knuspriger Pizza bis zu frischen Burger-Spezialitäten – wir bringen Geschmack auf den Tisch.</p>
+                        <div class="reveal delay-300">
+                            <a href="#speisekarte" class="group inline-block px-8 py-4 border border-mokka-gold/50 hover:border-mokka-gold bg-transparent transition-all duration-300">
+                                <span class="text-white text-xs uppercase tracking-[0.2em] group-hover:text-mokka-gold">Menü Entdecken</span>
+                            </a>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- 🍔 NEUER BEREICH: SPEISEKARTE SHOWCASE -->
+                <section id="speisekarte" class="bg-[#0A0A0A] py-32 px-6 md:px-12 border-t border-white/10">
+                    <div class="max-w-7xl mx-auto">
+                        <!-- Sektions-Kopf -->
+                        <div class="text-center mb-20 reveal">
+                            <h2 class="text-4xl md:text-6xl text-white mb-6 font-serif">Unsere <span class="italic text-mokka-gold">Meisterwerke</span></h2>
+                            <div class="w-16 h-[1px] bg-mokka-gold mx-auto mb-6"></div>
+                            <p class="text-mokka-gold max-w-2xl mx-auto font-light leading-relaxed uppercase tracking-widest text-xs md:text-sm flex flex-wrap justify-center gap-3 md:gap-6">
+                                <span>Frische Zutaten</span>
+                                <span class="text-white/30">•</span>
+                                <span>Saftiges Rindfleisch</span>
+                                <span class="text-white/30">•</span>
+                                <span>Hausgemacht & Lecker</span>
+                            </p>
+                        </div>
+
+                        <!-- Burger Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-14">
+                            
+                            <!-- ITEM 1 -->
+                            <div class="bg-black border border-white/5 reveal flex flex-col group overflow-hidden">
+                                <div class="relative h-80 md:h-[400px] flex items-center justify-center">
+                                    <img id="img-mw-1" src="" alt="2x PINDRINDFLEISCH" onerror="this.src='https://placehold.co/1200x800/1A1A1A/A69076?text=Bild+im+img+Ordner+hinzufuegen'" class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105">
+                                </div>
+                            </div>
+
+                            <!-- ITEM 2 -->
+                            <div class="bg-black border border-white/5 reveal delay-100 flex flex-col group overflow-hidden">
+                                <div class="relative h-80 md:h-[400px] flex items-center justify-center">
+                                    <img id="img-mw-2" src="" alt="ROASTBEEF BURGER" onerror="this.src='https://placehold.co/1200x800/1A1A1A/A69076?text=Bild+im+img+Ordner+hinzufuegen'" class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105">
+                                </div>
+                            </div>
+
+                            <!-- ITEM 3 -->
+                            <div class="bg-black border border-white/5 reveal flex flex-col group overflow-hidden">
+                                <div class="relative h-80 md:h-[400px] flex items-center justify-center">
+                                    <img id="img-mw-3" src="" alt="SPAGETTI BOLOGNESE" onerror="this.src='https://placehold.co/1200x800/1A1A1A/A69076?text=Bild+im+img+Ordner+hinzufuegen'" class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105">
+                                </div>
+                            </div>
+
+                            <!-- ITEM 4 -->
+                            <div class="bg-black border border-white/5 reveal delay-100 flex flex-col group overflow-hidden">
+                                <div class="relative h-80 md:h-[400px] flex items-center justify-center">
+                                    <img id="img-mw-4" src="" alt="TUNA PIZZA" onerror="this.src='https://placehold.co/1200x800/1A1A1A/A69076?text=Bild+im+img+Ordner+hinzufuegen'" class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105">
+                                </div>
+                            </div>
+
+                            <!-- ITEM 5 -->
+                            <div class="bg-black border border-white/5 reveal flex flex-col group overflow-hidden">
+                                <div class="relative h-80 md:h-[400px] flex items-center justify-center">
+                                    <img id="img-mw-5" src="" alt="DOPPEL CHEESEBURGER BACON" onerror="this.src='https://placehold.co/1200x800/1A1A1A/A69076?text=Bild+im+img+Ordner+hinzufuegen'" class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105">
+                                </div>
+                            </div>
+
+                            <!-- ITEM 6 -->
+                            <div class="bg-black border border-white/5 reveal delay-100 flex flex-col group overflow-hidden">
+                                <div class="relative h-80 md:h-[400px] flex items-center justify-center">
+                                    <img id="img-mw-6" src="" alt="CHEF BURGER" onerror="this.src='https://placehold.co/1200x800/1A1A1A/A69076?text=Bild+im+img+Ordner+hinzufuegen'" class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105">
+                                </div>
+                            </div>
+
+                            <!-- ITEM 7 -->
+                            <div class="bg-black border border-white/5 reveal flex flex-col group overflow-hidden">
+                                <div class="relative h-80 md:h-[400px] flex items-center justify-center">
+                                    <img id="img-mw-7" src="" alt="ROASTBEEF BURGER ZART" onerror="this.src='https://placehold.co/1200x800/1A1A1A/A69076?text=Bild+im+img+Ordner+hinzufuegen'" class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105">
+                                </div>
+                            </div>
+
+                            <!-- ITEM 8 -->
+                            <div class="bg-black border border-white/5 reveal delay-100 flex flex-col group overflow-hidden">
+                                <div class="relative h-80 md:h-[400px] flex items-center justify-center">
+                                    <img id="img-mw-8" src="" alt="VEGGI BURGER" onerror="this.src='https://placehold.co/1200x800/1A1A1A/A69076?text=Bild+im+img+Ordner+hinzufuegen'" class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- STORY -->
+                <section id="story" class="bg-mokka-cream py-32 px-6 md:px-12 text-mokka-coffee">
+                    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                        <div class="reveal">
+                            <h2 class="text-4xl md:text-6xl mb-8 leading-tight font-serif">Genuss in <br><span class="italic text-mokka-gold">Sinzig</span></h2>
+                            <div class="w-12 h-[1px] bg-mokka-coffee/20 mb-8"></div>
+                            <p class="font-light text-lg leading-relaxed text-mokka-coffee/80 mb-6">Wir bringen Geschmack auf den Tisch. In unserem Restaurant legen wir besonderen Wert auf Frische, Qualität und eine gemütliche Atmosphäre für jeden Anlass.</p>
+                            <p class="font-light text-lg leading-relaxed text-mokka-coffee/80">Ob Sie entspannt einen unserer Salate genießen, eine authentische Pizza probieren oder unseren exzellenten Kaffee erleben – wir heißen Sie herzlich willkommen.</p>
+                        </div>
+                        <div class="reveal delay-200 relative">
+                            <div class="aspect-[3/4] overflow-hidden relative group">
+                                <img id="img-story" src="" alt="Unsere Geschichte" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
+                                <div class="absolute top-4 right-4 bottom-4 left-4 border border-white/20 pointer-events-none"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- LOCATION -->
+                <section id="location" class="bg-mokka-dark py-32 px-6">
+                    <div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 items-start">
+                        <div class="w-full md:w-1/3 reveal">
+                            <h2 class="text-4xl md:text-5xl text-white mb-6 font-serif">Besuchen Sie Uns</h2>
+                            <div class="w-12 h-[1px] bg-mokka-gold mb-8"></div>
+                            <p class="text-gray-400 mb-8 leading-relaxed">Genießen Sie leckeres Essen, köstlichen Kaffee und unsere herzliche Gastfreundschaft vor Ort.</p>
+                            
+                            <div class="flex items-start gap-4 mb-10">
+                                <i data-lucide="map-pin" class="w-5 h-5 text-mokka-gold mt-1"></i>
+                                <p class="text-gray-300 text-sm leading-relaxed">Barbarossastraße 1<br>53489 Sinzig<br>Deutschland</p>
+                            </div>
+
+                            <div class="grid gap-4">
+                                <a href="tel:01732979600" class="bg-[#1A1A1A] p-6 border border-white/10 text-white hover:border-mokka-gold transition-all duration-300 flex items-center gap-4 group">
+                                    <div class="bg-mokka-gold/10 p-3 rounded-full group-hover:bg-mokka-gold group-hover:text-black transition-colors">
+                                        <i data-lucide="phone" class="w-5 h-5"></i>
+                                    </div>
+                                    <div><p class="text-[10px] uppercase text-gray-500">Telefon</p><p class="text-lg font-serif">0173 2979600</p></div>
+                                </a>
+                                <a href="mailto:info@stadtcafe-sinzig.de" class="bg-[#1A1A1A] p-6 border border-white/10 text-white hover:border-mokka-gold transition-all duration-300 flex items-center gap-4 group">
+                                    <div class="bg-mokka-gold/10 p-3 rounded-full group-hover:bg-mokka-gold group-hover:text-black transition-colors">
+                                        <i data-lucide="mail" class="w-5 h-5"></i>
+                                    </div>
+                                    <div><p class="text-[10px] uppercase text-gray-500">E-Mail</p><p class="text-lg font-serif">info@stadtcafe-sinzig.de</p></div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-2/3 h-[500px] border border-white/10 overflow-hidden bg-[#1A1A1A] reveal delay-200">
+                            <iframe 
+                                class="w-full h-full border-0 opacity-85" 
+                                style="filter: invert(90%) hue-rotate(180deg) brightness(95%) contrast(110%) saturate(60%);"
+                                src="https://maps.google.com/maps?q=Barbarossastra%C3%9Fe%201,%2053489%20Sinzig&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="bg-white border-t border-black/5 py-16 px-6 text-mokka-coffee text-center mt-auto">
+            <img id="footer-logo" src="" alt="Stadt Café Sinzig" onerror="this.src='https://placehold.co/200x80/ffffff/ffffff?text=LOGO+HIER'" class="h-10 w-auto mx-auto mb-6 opacity-80">
+            <p class="text-xs uppercase tracking-widest mb-8 opacity-60">© 2026 Stadt Café Sinzig.</p>
+            <div class="flex justify-center gap-12 text-[10px] font-bold uppercase tracking-widest">
+                <a href="#speisekarte" class="hover:text-mokka-gold transition-colors">Menü</a>
+                <a href="#" class="hover:text-mokka-gold transition-colors">Impressum</a>
+                <a href="#" class="hover:text-mokka-gold transition-colors">Datenschutz</a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        let isIntroFinished = false;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const setSrc = (id, src) => { const el = document.getElementById(id); if (el && src) el.src = src; };
+            setSrc('img-hero', websiteImages.heroBackground);
+            setSrc('img-story', websiteImages.storyImage);
+            setSrc('nav-logo', websiteImages.logo);
+            setSrc('footer-logo', websiteImages.logo);
+            
+            setSrc('img-mw-1', websiteImages.meisterwerk1);
+            setSrc('img-mw-2', websiteImages.meisterwerk2);
+            setSrc('img-mw-3', websiteImages.meisterwerk3);
+            setSrc('img-mw-4', websiteImages.meisterwerk4);
+            setSrc('img-mw-5', websiteImages.meisterwerk5);
+            setSrc('img-mw-6', websiteImages.meisterwerk6);
+            setSrc('img-mw-7', websiteImages.meisterwerk7);
+            setSrc('img-mw-8', websiteImages.meisterwerk8);
+            
+            if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+            
+            startIntro();
+        });
+
+        function startIntro() {
+            const overlay = document.getElementById('intro-overlay');
+            const main = document.getElementById('main-content');
+            const letters = document.querySelectorAll('.letter-animate');
+            const line = document.getElementById('intro-line');
+            const tagline = document.getElementById('intro-tagline');
+
+            letters.forEach((letter, index) => {
+                setTimeout(() => { letter.classList.add('active'); }, 100 * index + 300);
+            });
+
+            setTimeout(() => { if(line) line.style.transform = 'scaleX(1)'; }, 800);
+            setTimeout(() => { if(tagline) { tagline.classList.remove('opacity-0', 'translate-y-4'); tagline.classList.add('opacity-100', 'translate-y-0'); } }, 1400);
+
+            setTimeout(() => {
+                main.classList.add('layout-ready');
+                setTimeout(() => {
+                    overlay.style.opacity = '0';
+                    overlay.style.transform = 'scale(1.05)';
+                    main.classList.add('visible');
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                        document.body.style.overflow = 'auto'; 
+                        document.body.style.overflowX = 'hidden';
+                        isIntroFinished = true;
+
+                        setupRevealObserver();
+                        handleRouting(); 
+                    }, 1000);
+                }, 50);
+            }, 3000);
+        }
+
+        function setupRevealObserver() {
+            const obs = new IntersectionObserver((entries) => { 
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); }); 
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu) { 
+                const isOpening = menu.classList.contains('translate-x-full');
+                menu.classList.toggle('translate-x-full'); 
+                document.body.style.overflow = isOpening ? 'hidden' : 'auto';
+            }
+        }
+
+        window.addEventListener('hashchange', () => { if(isIntroFinished) handleRouting(); });
+        
+        function handleRouting() {
+            const hash = window.location.hash;
+
+            if (hash && hash !== '#') {
+                try {
+                    const target = document.querySelector(hash);
+                    if(target) {
+                        setTimeout(() => { target.scrollIntoView({behavior: 'smooth', block: 'start'}); }, 50);
+                    }
+                } catch (e) {
+                    console.warn("Invalid hash selector:", hash, e);
+                }
+            } else { window.scrollTo(0,0); }
+        }
+
+        function navigateToHome(e) { 
+            if (e) e.preventDefault(); 
+            if (window.location.hash !== '') { window.location.hash = ''; } 
+            else { handleRouting(); }
+        }
+        
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (nav) {
+                if (window.scrollY > 30) { nav.classList.add('shadow-md', 'py-2'); nav.classList.remove('py-6'); }
+                else { nav.classList.remove('shadow-md', 'py-2'); nav.classList.add('py-6'); }
+            }
+        });
+    </script>
+</body>
+</html>
